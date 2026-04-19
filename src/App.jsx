@@ -121,13 +121,37 @@ const styles = {
   },
   hint: { fontSize: 12, color: COLORS.muted, marginTop: 8 },
   spinner: { display: 'inline-block', marginRight: 8 },
+  loadingOverlay: {
+    position: 'fixed', inset: 0,
+    background: 'rgba(0,0,0,0.75)',
+    display: 'flex', flexDirection: 'column',
+    alignItems: 'center', justifyContent: 'center',
+    zIndex: 100,
+  },
+  loadingBox: {
+    background: COLORS.surface,
+    border: `1px solid ${COLORS.border}`,
+    borderRadius: 14,
+    padding: '36px 48px',
+    textAlign: 'center',
+  },
+  loadingTitle: { fontSize: 18, fontWeight: 700, marginBottom: 10 },
+  loadingSteps: { color: COLORS.muted, fontSize: 14, lineHeight: 1.8, margin: 0 },
+  pulse: {
+    width: 48, height: 48, borderRadius: '50%',
+    border: `3px solid ${COLORS.border}`,
+    borderTop: `3px solid ${COLORS.accent}`,
+    animation: 'spin 1s linear infinite',
+    margin: '0 auto 20px',
+  },
 };
 
 const EXPORT_INSTRUCTIONS = `How to export from GA4:
 1. GA4 → Reports → Engagement → Pages and screens
 2. Set date range (last 30 or 90 days)
 3. Click Download icon → Download CSV
-4. Open the file, select all, paste here`;
+4. Open the .csv file in TextEdit (Mac) or Notepad (Windows) — not Google Sheets
+5. Select all → Copy → Paste here`;
 
 export default function App() {
   const [siteName, setSiteName] = useState('');
@@ -165,6 +189,20 @@ export default function App() {
 
   return (
     <div style={styles.app}>
+      {loading && (
+        <div style={styles.loadingOverlay}>
+          <div style={styles.loadingBox}>
+            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+            <div style={styles.pulse} />
+            <div style={styles.loadingTitle}>Analyzing your site...</div>
+            <p style={styles.loadingSteps}>
+              Fetching underperforming pages<br />
+              Reading page content<br />
+              Generating recommendations
+            </p>
+          </div>
+        </div>
+      )}
       <div style={styles.container}>
         <div style={styles.header}>
           <h1 style={styles.h1}>Site Analytics Advisor</h1>
