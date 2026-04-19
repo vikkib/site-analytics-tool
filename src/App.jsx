@@ -104,9 +104,11 @@ const styles = {
   metaStat: { fontSize: 14, lineHeight: 1.6 },
   metaLabel: { color: COLORS.muted },
   issueList: { marginBottom: 16 },
-  issueItem: { fontSize: 14, color: COLORS.text, marginBottom: 12, paddingLeft: 16, position: 'relative', lineHeight: 1.6 },
+  issueItem: { fontSize: 14, color: COLORS.text, marginBottom: 12, lineHeight: 1.6, display: 'flex', gap: 12, alignItems: 'flex-start' },
+  issueDot: { width: 8, height: 8, borderRadius: '50%', background: COLORS.critical, flexShrink: 0, marginTop: 7 },
   fixList: {},
-  fixItem: { fontSize: 14, color: COLORS.text, marginBottom: 12, paddingLeft: 16, position: 'relative', lineHeight: 1.6 },
+  fixItem: { fontSize: 14, color: COLORS.text, marginBottom: 12, lineHeight: 1.6, display: 'flex', gap: 12, alignItems: 'flex-start' },
+  fixDot: { width: 8, height: 8, borderRadius: '50%', background: COLORS.success, flexShrink: 0, marginTop: 7 },
   divider: { color: COLORS.muted, fontSize: 11, marginBottom: 12, marginTop: 4, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.07em' },
   summary: {
     background: COLORS.surface,
@@ -380,14 +382,20 @@ export default function App() {
                     <div style={styles.divider}>Issues found</div>
                     <div style={styles.issueList}>
                       {rec.issues.map((issue, i) => (
-                        <div key={i} style={styles.issueItem}>• {issue}</div>
+                        <div key={i} style={styles.issueItem}>
+                          <span style={styles.issueDot} />
+                          <span>{issue}</span>
+                        </div>
                       ))}
                     </div>
 
                     <div style={styles.divider}>How to fix</div>
                     <div style={styles.fixList}>
                       {(expanded[idx] ? rec.fixes : rec.fixes.slice(0, 3)).map((fix, i) => (
-                        <div key={i} style={styles.fixItem}>→ {fix}</div>
+                        <div key={i} style={styles.fixItem}>
+                          <span style={styles.fixDot} />
+                          <span>{fix}</span>
+                        </div>
                       ))}
                       {rec.fixes.length > 3 && (
                         <button
