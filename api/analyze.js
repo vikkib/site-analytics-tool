@@ -66,8 +66,8 @@ function flagPages(rows) {
     const engagementRateRaw =
       row['Engagement rate'] ||
       row['Engaged sessions rate'] ||
-      '0';
-    const engagementRate = parseFloat(engagementRateRaw) || 0;
+      null;
+    const engagementRate = engagementRateRaw !== null ? (parseFloat(engagementRateRaw) || 0) : null;
     const avgTimeRaw =
       row['Average engagement time per active user'] ||
       row['Avg. session duration'] ||
@@ -76,10 +76,11 @@ function flagPages(rows) {
     const avgTimeSec = parseEngagementTime(avgTimeRaw);
 
     return { path, views, engagementRate, avgTimeSec };
-  }).filter(r => r.path && r.path !== '(not set)' && r.views >= 30);
+  }).filter(r => r.path && r.path !== '(not set)' && r.views >= 10);
 
+  // Flag if engagement rate present and low, OR avg time low, OR both
   return parsed
-    .filter(r => r.engagementRate < 0.5 || r.avgTimeSec < 60)
+    .filter(r => (r.engagementRate !== null ? r.engagementRate < 0.5 : true) || r.avgTimeSec < 60)
     .sort((a, b) => b.views - a.views)
     .slice(0, 4);
 }
@@ -148,13 +149,13 @@ module.exports = async (req, res) => {
 
   const pageBlocks = pagesWithContent
     .map(p => {
-      const engPct = (p.engagementRate * 100).toFixed(1);
+      const engPct = p.engagementRate !== null ? (p.engagementRate * 100).toFixed(1) + '%' : 'N/A (not in export)';
       const contentNote = p.content
         ? `CONTENT EXCERPT:\n${p.content}`
         : 'Content could not be fetched — give recommendations based on the URL and metrics alone.';
       return `PAGE: ${p.path}
 URL: ${p.fullUrl}
-Views: ${p.views} | Engagement rate: ${engPct}% | Avg time on page: ${p.avgTimeSec}s
+Views: ${p.views} | Engagement rate: ${engPct} | Avg time on page: ${p.avgTimeSec}s
 ${contentNote}`;
     })
     .join('\n\n---\n\n');
@@ -183,7 +184,7 @@ Return a JSON array. Each item:
 {
   "path": "/page-path",
   "severity": "CRITICAL" or "HIGH",
-  "engagementRate": "31%",
+  "engagementRate": "31%" or "N/A",
   "avgTime": "42s",
   "issues": ["specific issue 1", "specific issue 2"],
   "fixes": ["specific actionable fix referencing actual content", "another fix"],
