@@ -176,6 +176,7 @@ Rules:
 - Reference real text from the content when possible (quote specific headlines, phrases, CTAs)
 - Be concrete: "Your intro starts with 'Welcome...' — rewrite to open with the problem the reader is facing"
 - Severity: CRITICAL = engagement below 30% OR avg time below 30s; HIGH = engagement 30-50% OR avg time 30-60s
+- Content excerpts are TRUNCATED — NEVER flag incomplete sentences, abrupt endings, or mid-sentence cuts as page issues. They are fetch artifacts, not real content problems.
 - Return ONLY a valid JSON array, no other text
 
 ${pageBlocks}
