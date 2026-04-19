@@ -148,6 +148,82 @@ const styles = {
   },
 };
 
+const SAMPLE_RESULTS = {
+  totalPagesAnalyzed: 18,
+  flaggedCount: 4,
+  recommendations: [
+    {
+      path: '/programs/',
+      severity: 'CRITICAL',
+      engagementRate: 'N/A',
+      avgTime: '54s',
+      priority: 1,
+      issues: [
+        "Opening copy 'We have designed our lifestyle program...' is abstract — doesn't show what client actually does",
+        "CTA 'I'm Ready!' appears before explaining program structure or pricing — premature commitment ask",
+        'No pricing transparency or program duration mentioned — major conversion barrier',
+      ],
+      fixes: [
+        "Add program structure upfront: '12-Week Program: 3 Video Lessons/Week + Weekly 1:1 Coaching + Food Sensitivity Testing'",
+        "Move 'I'm Ready!' CTA to bottom after full program explanation; add softer CTA at top: 'See Full Program Details'",
+        "Replace abstract opening with specific outcome: 'The Nourish Program: 12 weeks of coaching that helped 93% of clients keep the weight off'",
+        'Add a timeline section: what happens in week 1, week 4, week 12 — visitors need to know what they are committing to',
+      ],
+    },
+    {
+      path: '/',
+      severity: 'CRITICAL',
+      engagementRate: 'N/A',
+      avgTime: '21s',
+      priority: 2,
+      issues: [
+        "Headline 'McLean County's weight loss program for women who are done with diets' buries the unique value and limits geography",
+        "First CTA 'Tell me more!' is vague — doesn't drive action or set expectations",
+        "'93% keep the weight off' statistic is buried mid-page instead of in the hero",
+      ],
+      fixes: [
+        "Rewrite hero headline: '93% of Our Clients Keep the Weight Off — Without Restrictive Diets or Meal Replacements'",
+        "Replace 'Tell me more!' with 'Schedule Your Free Consultation' — use consistent language sitewide",
+        'Move the 93% statistic into the hero section with visual emphasis, directly under the headline',
+      ],
+    },
+    {
+      path: '/contact/',
+      severity: 'HIGH',
+      engagementRate: 'N/A',
+      avgTime: '16s',
+      priority: 3,
+      issues: [
+        "Headline 'Contact us Ready to Take the next step?' is weak — no value proposition at the decision moment",
+        "Two competing CTAs ('Schedule your consultation' vs 'Send a Message') fragment conversion intent",
+        "'How did you hear about us' field adds friction before the user has committed",
+      ],
+      fixes: [
+        "Replace headline with: 'Book Your Free Consultation — Find Out If Nourish Is Right For You in 20 Minutes'",
+        "Remove 'Send a Message' form entirely — commit to one conversion action: scheduling the consultation",
+        "Remove 'How did you hear about the Nourish program?' — collect this after booking, not before",
+      ],
+    },
+    {
+      path: '/about/',
+      severity: 'HIGH',
+      engagementRate: 'N/A',
+      avgTime: '31s',
+      priority: 4,
+      issues: [
+        "Opens with healthcare crisis statistics ('73% of adults...') — fear-based, may alienate rather than inspire",
+        "Phrase 'More frustration. More shame. More trying harder.' dwells on negative without quick pivot to hope",
+        "Content focuses on what Nourish ISN'T rather than what it IS",
+      ],
+      fixes: [
+        "Flip the opening: Start with 'After 35 years in healthcare, Deb created a program where 93% of clients keep the weight off' THEN explain why",
+        "Cut the obesity statistics — visitors already know there's a problem. Replace with: 'Deb knew the answer wasn't another restrictive diet'",
+        "Add a clear CTA at the end: 'Ready to work with Deb? Schedule your free consultation'",
+      ],
+    },
+  ],
+};
+
 const EXPORT_INSTRUCTIONS = `How to export from GA4:
 1. GA4 → Reports → Engagement → Pages and screens
 2. Set date range (last 30 or 90 days)
@@ -188,6 +264,7 @@ export default function App() {
   };
 
   const toggleExpand = (idx) => setExpanded(prev => ({ ...prev, [idx]: !prev[idx] }));
+  const loadSample = () => setResults(SAMPLE_RESULTS);
 
   return (
     <div style={styles.app}>
@@ -250,6 +327,12 @@ export default function App() {
             disabled={!canAnalyze}
           >
             {loading ? '⏳ Analyzing pages...' : 'Analyze My Site'}
+          </button>
+          <button
+            onClick={loadSample}
+            style={{ background: 'none', border: 'none', color: COLORS.muted, cursor: 'pointer', fontSize: 12, padding: '8px 0 0', display: 'block', width: '100%', textAlign: 'center' }}
+          >
+            Load sample results (for UI preview)
           </button>
         </div>
 
