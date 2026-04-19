@@ -80,16 +80,19 @@ const styles = {
   buttonDisabled: { opacity: 0.5, cursor: 'not-allowed' },
   sectionTitle: { fontSize: 18, fontWeight: 700, marginBottom: 20, marginTop: 0, lineHeight: 1.3 },
   badge: (severity) => ({
-    display: 'inline-block',
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 5,
     padding: '3px 10px',
     borderRadius: 20,
     fontSize: 11,
-    fontWeight: 700,
+    fontWeight: 600,
     textTransform: 'uppercase',
     letterSpacing: '0.05em',
     background: severity === 'CRITICAL' ? 'rgba(239,68,68,0.12)' : 'rgba(245,158,11,0.12)',
     color: severity === 'CRITICAL' ? COLORS.critical : COLORS.warning,
-    border: `1px solid ${severity === 'CRITICAL' ? 'rgba(239,68,68,0.4)' : 'rgba(245,158,11,0.4)'}`,
+    border: `1px solid ${severity === 'CRITICAL' ? 'rgba(239,68,68,0.3)' : 'rgba(245,158,11,0.3)'}`,
+    whiteSpace: 'nowrap',
   }),
   pageCard: {
     background: COLORS.surface,
@@ -98,18 +101,23 @@ const styles = {
     padding: 24,
     marginBottom: 16,
   },
-  pageHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16, gap: 12 },
-  pagePath: { fontFamily: "'JetBrains Mono', 'Fira Mono', 'Courier New', monospace", fontSize: 14, color: COLORS.accent, fontWeight: 600 },
+  pageHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, gap: 12 },
+  pagePath: {
+    fontFamily: "'JetBrains Mono', 'Fira Mono', 'Courier New', monospace",
+    fontSize: 14, color: COLORS.accent, fontWeight: 500,
+    background: 'rgba(59,130,246,0.1)', padding: '4px 10px',
+    borderRadius: 6, display: 'inline-block',
+  },
   metaRow: { display: 'flex', gap: 24, marginBottom: 20 },
   metaStat: { fontSize: 14, lineHeight: 1.6 },
-  metaLabel: { color: COLORS.muted },
+  metaLabel: { color: COLORS.textSecondary },
   issueList: { marginBottom: 16 },
   issueItem: { fontSize: 14, color: COLORS.text, marginBottom: 12, lineHeight: 1.6, display: 'flex', gap: 12, alignItems: 'flex-start' },
   issueDot: { width: 8, height: 8, borderRadius: '50%', background: COLORS.critical, flexShrink: 0, marginTop: 7 },
   fixList: {},
   fixItem: { fontSize: 14, color: COLORS.text, marginBottom: 12, lineHeight: 1.6, display: 'flex', gap: 12, alignItems: 'flex-start' },
   fixDot: { width: 8, height: 8, borderRadius: '50%', background: COLORS.success, flexShrink: 0, marginTop: 7 },
-  divider: { color: COLORS.muted, fontSize: 11, marginBottom: 12, marginTop: 4, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.07em' },
+  divider: { color: COLORS.textSecondary, fontSize: 11, marginBottom: 12, marginTop: 20, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.07em' },
   summary: {
     background: COLORS.surface,
     border: `1px solid ${COLORS.border}`,
@@ -397,7 +405,9 @@ export default function App() {
                       <div>
                         <div style={styles.pagePath}>{rec.path}</div>
                       </div>
-                      <span style={styles.badge(rec.severity)}>{rec.severity}</span>
+                      <span style={styles.badge(rec.severity)}>
+                        {rec.severity === 'CRITICAL' ? '⚠' : '●'} {rec.severity}
+                      </span>
                     </div>
 
                     <div style={styles.metaRow}>
@@ -432,9 +442,11 @@ export default function App() {
                       {rec.fixes.length > 3 && (
                         <button
                           onClick={() => toggleExpand(idx)}
-                          style={{ background: 'none', border: 'none', color: COLORS.muted, cursor: 'pointer', fontSize: 13, padding: '4px 0', marginTop: 4 }}
+                          style={{ background: 'none', border: 'none', color: COLORS.textSecondary, cursor: 'pointer', fontSize: 13, padding: '6px 0 0', marginTop: 2, textDecoration: 'underline', textDecorationColor: 'transparent' }}
+                          onMouseEnter={e => e.target.style.color = COLORS.text}
+                          onMouseLeave={e => e.target.style.color = COLORS.textSecondary}
                         >
-                          {expanded[idx] ? '▲ Show less' : `▼ Show ${rec.fixes.length - 3} more fixes`}
+                          {expanded[idx] ? '↑ Show less' : `↓ Show ${rec.fixes.length - 3} more fixes`}
                         </button>
                       )}
                     </div>
