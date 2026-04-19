@@ -1,6 +1,7 @@
 const Anthropic = require('@anthropic-ai/sdk');
 
-function parseCSVLine(line) {
+function splitLine(line, delimiter) {
+  if (delimiter === '\t') return line.split('\t').map(v => v.replace(/"/g, '').trim());
   const result = [];
   let current = '';
   let inQuotes = false;
@@ -25,11 +26,13 @@ function parseGA4CSV(csvText) {
 
   if (lines.length < 2) return [];
 
-  const headers = parseCSVLine(lines[0]).map(h => h.replace(/"/g, '').trim());
+  // Auto-detect delimiter: tab or comma
+  const delimiter = lines[0].includes('\t') ? '\t' : ',';
+  const headers = splitLine(lines[0], delimiter).map(h => h.replace(/"/g, '').trim());
   const rows = [];
 
   for (let i = 1; i < lines.length; i++) {
-    const values = parseCSVLine(lines[i]);
+    const values = splitLine(lines[i], delimiter);
     if (values.length < 2) continue;
     const row = {};
     headers.forEach((h, idx) => {
