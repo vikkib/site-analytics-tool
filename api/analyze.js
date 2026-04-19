@@ -101,7 +101,7 @@ async function fetchPageContent(url) {
       .replace(/<[^>]+>/g, ' ')
       .replace(/\s+/g, ' ')
       .trim()
-      .slice(0, 1500);
+      .slice(0, 2500);
     return text || null;
   } catch {
     return null;
@@ -151,7 +151,7 @@ module.exports = async (req, res) => {
     .map(p => {
       const engPct = p.engagementRate !== null ? (p.engagementRate * 100).toFixed(1) + '%' : 'N/A (not in export)';
       const contentNote = p.content
-        ? `CONTENT EXCERPT:\n${p.content}`
+        ? `CONTENT EXCERPT (truncated — do NOT flag incomplete sentences as broken content):\n${p.content}`
         : 'Content could not be fetched — give recommendations based on the URL and metrics alone.';
       return `PAGE: ${p.path}
 URL: ${p.fullUrl}
