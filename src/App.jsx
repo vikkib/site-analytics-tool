@@ -116,10 +116,12 @@ const styles = {
     borderRadius: 10,
     padding: '20px 24px',
     marginBottom: 32,
-    fontSize: 15,
-    color: COLORS.textSecondary,
-    lineHeight: 1.6,
   },
+  summaryHeadline: { fontSize: 22, fontWeight: 700, color: COLORS.text, lineHeight: 1.3, marginBottom: 10 },
+  summaryMeta: { fontSize: 14, color: COLORS.textSecondary },
+  summaryCounts: { display: 'flex', gap: 20, marginTop: 12, flexWrap: 'wrap' },
+  summaryCount: (color) => ({ display: 'flex', alignItems: 'center', gap: 7, fontSize: 13, color: COLORS.textSecondary }),
+  summaryDot: (color) => ({ width: 8, height: 8, borderRadius: '50%', background: color, flexShrink: 0 }),
   error: {
     background: 'rgba(239,68,68,0.08)',
     border: `1px solid rgba(239,68,68,0.4)`,
@@ -367,8 +369,24 @@ export default function App() {
             ) : (
               <>
                 <div style={styles.summary}>
-                  Found <strong>{results.flaggedCount}</strong> underperforming pages out of{' '}
-                  <strong>{results.totalPagesAnalyzed}</strong> analyzed. Fix these first:
+                  <div style={styles.summaryHeadline}>
+                    {results.flaggedCount} pages need attention
+                  </div>
+                  <div style={styles.summaryMeta}>
+                    Out of {results.totalPagesAnalyzed} pages analyzed — fix these first
+                  </div>
+                  <div style={styles.summaryCounts}>
+                    {(() => {
+                      const critical = results.recommendations.filter(r => r.severity === 'CRITICAL').length;
+                      const high = results.recommendations.filter(r => r.severity === 'HIGH').length;
+                      const healthy = results.totalPagesAnalyzed - results.flaggedCount;
+                      return (<>
+                        <span style={styles.summaryCount(COLORS.critical)}><span style={styles.summaryDot(COLORS.critical)} />{critical} critical</span>
+                        <span style={styles.summaryCount(COLORS.warning)}><span style={styles.summaryDot(COLORS.warning)} />{high} high</span>
+                        <span style={styles.summaryCount(COLORS.success)}><span style={styles.summaryDot(COLORS.success)} />{healthy} healthy</span>
+                      </>);
+                    })()}
+                  </div>
                 </div>
 
                 <h2 style={styles.sectionTitle}>Priority Fix List</h2>
