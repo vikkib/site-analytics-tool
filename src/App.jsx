@@ -23,7 +23,7 @@ const styles = {
     lineHeight: 1.6,
     padding: '48px 20px',
   },
-  container: { maxWidth: 820, margin: '0 auto' },
+  container: { maxWidth: 960, margin: '0 auto' },
   header: { marginBottom: 48 },
   h1: { fontSize: 28, fontWeight: 700, margin: 0, color: COLORS.text, lineHeight: 1.3 },
   subtitle: { color: COLORS.textSecondary, marginTop: 10, fontSize: 15, lineHeight: 1.6 },
@@ -288,11 +288,34 @@ export default function App() {
   const loadSample = () => setResults(SAMPLE_RESULTS);
 
   return (
-    <div style={styles.app}>
+    <div style={styles.app} className="saa-app">
+      <style>{`
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(8px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        input:focus, textarea:focus {
+          outline: 2px solid ${COLORS.accent} !important;
+          outline-offset: 1px;
+          border-color: ${COLORS.accent} !important;
+        }
+        button:focus-visible {
+          outline: 2px solid ${COLORS.accent};
+          outline-offset: 2px;
+        }
+        details summary::-webkit-details-marker { display: none; }
+        @media (max-width: 640px) {
+          .saa-app { padding: 24px 16px !important; }
+          .saa-card { padding: 20px 16px !important; }
+          .saa-row { flex-direction: column !important; }
+          .saa-page-card { padding: 16px !important; }
+        }
+      `}</style>
       {loading && (
         <div style={styles.loadingOverlay}>
           <div style={styles.loadingBox}>
-            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+            <style>{``}</style>
             <div style={styles.pulse} />
             <div style={styles.loadingTitle}>Analyzing your site...</div>
             <p style={styles.loadingSteps}>
@@ -309,8 +332,8 @@ export default function App() {
           <p style={styles.subtitle}>Paste GA4 data → get specific, page-by-page improvement recommendations</p>
         </div>
 
-        <div style={styles.card}>
-          <div style={styles.row}>
+        <div style={styles.card} className="saa-card">
+          <div style={styles.row} className="saa-row">
             <div style={styles.col}>
               <label style={styles.label}>Site Name</label>
               <input
@@ -371,7 +394,7 @@ export default function App() {
         {error && <div style={styles.error}>⚠ {error}</div>}
 
         {results && (
-          <div>
+          <div style={{ animation: 'fadeInUp 200ms ease both' }}>
             {results.recommendations.length === 0 ? (
               <div style={styles.summary}>✓ All pages meet engagement thresholds. No urgent fixes needed.</div>
             ) : (
@@ -400,7 +423,7 @@ export default function App() {
                 <h2 style={styles.sectionTitle}>Priority Fix List</h2>
 
                 {results.recommendations.map((rec, idx) => (
-                  <div key={idx} style={styles.pageCard}>
+                  <div key={idx} style={styles.pageCard} className="saa-page-card">
                     <div style={styles.pageHeader}>
                       <div>
                         <div style={styles.pagePath}>{rec.path}</div>
