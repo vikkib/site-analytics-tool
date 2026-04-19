@@ -129,7 +129,10 @@ const styles = {
     fontSize: 14,
     marginBottom: 20,
   },
-  hint: { fontSize: 12, color: COLORS.muted, marginTop: 8 },
+  details: { marginTop: 10 },
+  detailsSummary: { fontSize: 13, color: COLORS.textSecondary, cursor: 'pointer', userSelect: 'none', listStyle: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 },
+  detailsBody: { marginTop: 12, paddingLeft: 4 },
+  detailsOl: { margin: 0, paddingLeft: 20, fontSize: 13, color: COLORS.textSecondary, lineHeight: 2 },
   spinner: { display: 'inline-block', marginRight: 8 },
   loadingOverlay: {
     position: 'fixed', inset: 0,
@@ -322,11 +325,22 @@ export default function App() {
             <label style={styles.label}>GA4 CSV Export — Pages & Screens</label>
             <textarea
               style={styles.textarea}
-              placeholder={EXPORT_INSTRUCTIONS}
+              placeholder="Paste your GA4 CSV export here"
               value={csvData}
               onChange={e => setCsvData(e.target.value)}
             />
-            <p style={styles.hint}>{EXPORT_INSTRUCTIONS}</p>
+            <details style={styles.details}>
+              <summary style={styles.detailsSummary}>▸ How to export from GA4</summary>
+              <div style={styles.detailsBody}>
+                <ol style={styles.detailsOl}>
+                  <li>GA4 → Reports → Engagement → Pages and screens</li>
+                  <li>Set date range (last 90 days recommended)</li>
+                  <li>Click the Download icon → Download CSV</li>
+                  <li>Open the .csv file in TextEdit (Mac) or Notepad (Windows) — <strong>not Google Sheets</strong></li>
+                  <li>Select all → Copy → Paste above</li>
+                </ol>
+              </div>
+            </details>
           </div>
 
           <button
