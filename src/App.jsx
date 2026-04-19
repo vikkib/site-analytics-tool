@@ -26,7 +26,7 @@ const styles = {
   container: { maxWidth: 820, margin: '0 auto' },
   header: { marginBottom: 48 },
   h1: { fontSize: 28, fontWeight: 700, margin: 0, color: COLORS.text, lineHeight: 1.3 },
-  subtitle: { color: COLORS.muted, marginTop: 10, fontSize: 15, lineHeight: 1.6 },
+  subtitle: { color: COLORS.textSecondary, marginTop: 10, fontSize: 15, lineHeight: 1.6 },
   card: {
     background: COLORS.surface,
     border: `1px solid ${COLORS.border}`,
@@ -34,7 +34,7 @@ const styles = {
     padding: 32,
     marginBottom: 24,
   },
-  label: { display: 'block', fontSize: 12, color: COLORS.muted, marginBottom: 8, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.07em' },
+  label: { display: 'block', fontSize: 12, color: COLORS.textSecondary, marginBottom: 8, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.07em' },
   input: {
     width: '100%',
     background: COLORS.bg,
