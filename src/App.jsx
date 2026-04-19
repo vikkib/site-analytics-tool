@@ -140,9 +140,9 @@ const styles = {
     marginBottom: 20,
   },
   details: { marginTop: 10 },
-  detailsSummary: { fontSize: 13, color: COLORS.textSecondary, cursor: 'pointer', userSelect: 'none', listStyle: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 },
+  detailsSummary: { fontSize: 14, color: COLORS.text, cursor: 'pointer', userSelect: 'none', listStyle: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 },
   detailsBody: { marginTop: 12, paddingLeft: 4 },
-  detailsOl: { margin: 0, paddingLeft: 20, fontSize: 13, color: COLORS.textSecondary, lineHeight: 2 },
+  detailsOl: { margin: 0, paddingLeft: 20, fontSize: 14, color: COLORS.text, lineHeight: 2 },
   spinner: { display: 'inline-block', marginRight: 8 },
   loadingOverlay: {
     position: 'fixed', inset: 0,
@@ -362,7 +362,7 @@ export default function App() {
               value={csvData}
               onChange={e => setCsvData(e.target.value)}
             />
-            <details style={styles.details}>
+            <details style={styles.details} open>
               <summary style={styles.detailsSummary}>▸ How to export from GA4</summary>
               <div style={styles.detailsBody}>
                 <ol style={styles.detailsOl}>
@@ -385,7 +385,7 @@ export default function App() {
           </button>
           <button
             onClick={loadSample}
-            style={{ background: 'none', border: 'none', color: COLORS.muted, cursor: 'pointer', fontSize: 12, padding: '8px 0 0', display: 'block', width: '100%', textAlign: 'center' }}
+            style={{ background: 'none', border: 'none', color: COLORS.textSecondary, cursor: 'pointer', fontSize: 13, padding: '8px 0 0', display: 'block', width: '100%', textAlign: 'center' }}
           >
             Load sample results (for UI preview)
           </button>
