@@ -81,14 +81,14 @@ function flagPages(rows) {
   return parsed
     .filter(r => r.engagementRate < 0.5 || r.avgTimeSec < 60)
     .sort((a, b) => b.views - a.views)
-    .slice(0, 8);
+    .slice(0, 4);
 }
 
 async function fetchPageContent(url) {
   try {
     const res = await fetch(url, {
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; SiteAnalyticsAdvisor/1.0)' },
-      signal: AbortSignal.timeout(8000),
+      signal: AbortSignal.timeout(3000),
     });
     const html = await res.text();
     const text = html
@@ -100,7 +100,7 @@ async function fetchPageContent(url) {
       .replace(/<[^>]+>/g, ' ')
       .replace(/\s+/g, ' ')
       .trim()
-      .slice(0, 3000);
+      .slice(0, 1500);
     return text || null;
   } catch {
     return null;
@@ -163,7 +163,7 @@ ${contentNote}`;
 
   const message = await client.messages.create({
     model: 'claude-sonnet-4-5',
-    max_tokens: 8000,
+    max_tokens: 3000,
     messages: [
       {
         role: 'user',
